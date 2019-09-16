@@ -7,11 +7,17 @@ class ExpansionPanelListDemo extends StatefulWidget {
 }
 
 class _ExpansionPanelListDemoState extends State<ExpansionPanelListDemo> {
-List<int> mList;
+List mList;
 List<ExpansionPanelBean> expendStateList;
+@override
+void initState() {
+  _ExpansionPanelListState(); 
+  super.initState();
+}
+
 _ExpansionPanelListState() {
-  mList = [];
-  expendStateList = [];
+  mList = new List();
+  expendStateList = new List();
   for (var a =0; a<10;a++) {
     mList.add(a);
     expendStateList.add(ExpansionPanelBean(false,a));
@@ -42,16 +48,22 @@ _ExpansionPanelListState() {
           expansionCallback: (index,boll) {
              _setCurrentIndex(index, boll);
           },
-          children: mList.map<ExpansionPanel>((index){
-             return new ExpansionPanel(
+          children: mList.map((index){
+             return ExpansionPanel(
+               canTapOnHeader: true,
                 headerBuilder: (context,isExpanded){
                     return ListTile(
                       title:Text('This is No. $index')
                     );
                 },
-                body: Container(
-                  child: Text('2222222'),
-                ),
+                body:ListTile(
+                  title:Text('expansion no.$index'),
+                  onTap: (){
+                    setState(() {
+                      print(index);
+                    });
+                  },
+                 ),
                 isExpanded: expendStateList[index].isOpen,
              );
           }).toList()
